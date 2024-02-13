@@ -1,0 +1,20 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "afb9365b74e5ce9a2e5fa69aa5577136bc81bb7dedbd792da39b521f6a446710": {
+      "source": {
+        "path": "SessRdsStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "058264214610-us-east-2": {
+          "bucketName": "cdk-hnb659fds-assets-058264214610-us-east-2",
+          "objectKey": "afb9365b74e5ce9a2e5fa69aa5577136bc81bb7dedbd792da39b521f6a446710.json",
+          "region": "us-east-2",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::058264214610:role/cdk-hnb659fds-file-publishing-role-058264214610-us-east-2"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

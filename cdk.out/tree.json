@@ -1,0 +1,324 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "SessRdsStackpg": {
+        "id": "SessRdsStackpg",
+        "path": "SessRdsStackpg",
+        "children": {
+          "db-admin-user-secret-postgres": {
+            "id": "db-admin-user-secret-postgres",
+            "path": "SessRdsStackpg/db-admin-user-secret-postgres",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SessRdsStackpg/db-admin-user-secret-postgres/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SecretsManager::Secret",
+                  "aws:cdk:cloudformation:props": {
+                    "description": "Database master user credentials",
+                    "generateSecretString": {
+                      "secretStringTemplate": "{\"username\":\"postgres\"}",
+                      "generateStringKey": "password",
+                      "passwordLength": 16,
+                      "excludePunctuation": true
+                    },
+                    "name": "db-admin-user-secret-postgres"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_secretsmanager.CfnSecret",
+                  "version": "2.123.0"
+                }
+              },
+              "Attachment": {
+                "id": "Attachment",
+                "path": "SessRdsStackpg/db-admin-user-secret-postgres/Attachment",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SessRdsStackpg/db-admin-user-secret-postgres/Attachment/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SecretsManager::SecretTargetAttachment",
+                      "aws:cdk:cloudformation:props": {
+                        "secretId": {
+                          "Ref": "dbadminusersecretpostgresB0AD6A63"
+                        },
+                        "targetId": {
+                          "Ref": "SESSPostgres3CF2D51A"
+                        },
+                        "targetType": "AWS::RDS::DBInstance"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_secretsmanager.CfnSecretTargetAttachment",
+                      "version": "2.123.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_secretsmanager.SecretTargetAttachment",
+                  "version": "2.123.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_secretsmanager.Secret",
+              "version": "2.123.0"
+            }
+          },
+          "my-vpc": {
+            "id": "my-vpc",
+            "path": "SessRdsStackpg/my-vpc",
+            "children": {
+              "PublicSubnet1": {
+                "id": "PublicSubnet1",
+                "path": "SessRdsStackpg/my-vpc/PublicSubnet1",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.123.0"
+                }
+              },
+              "PublicSubnet2": {
+                "id": "PublicSubnet2",
+                "path": "SessRdsStackpg/my-vpc/PublicSubnet2",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.123.0"
+                }
+              },
+              "PublicSubnet3": {
+                "id": "PublicSubnet3",
+                "path": "SessRdsStackpg/my-vpc/PublicSubnet3",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.123.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.Resource",
+              "version": "2.123.0"
+            }
+          },
+          "sesspg-SG": {
+            "id": "sesspg-SG",
+            "path": "SessRdsStackpg/sesspg-SG",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SessRdsStackpg/sesspg-SG/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "SessRdsStackpg/sesspg-SG",
+                    "groupName": "sesspg-SG",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "vpcId": "vpc-074b34d3b2100ab51"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.123.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+              "version": "2.123.0"
+            }
+          },
+          "SESS-Postgres": {
+            "id": "SESS-Postgres",
+            "path": "SessRdsStackpg/SESS-Postgres",
+            "children": {
+              "SubnetGroup": {
+                "id": "SubnetGroup",
+                "path": "SessRdsStackpg/SESS-Postgres/SubnetGroup",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "SessRdsStackpg/SESS-Postgres/SubnetGroup/Default",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::RDS::DBSubnetGroup",
+                      "aws:cdk:cloudformation:props": {
+                        "dbSubnetGroupDescription": "Subnet group for SESS-Postgres database",
+                        "subnetIds": [
+                          "subnet-094d643344343d2cb",
+                          "subnet-0972dab1c0de841c4",
+                          "subnet-0071a9db132419af3"
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_rds.CfnDBSubnetGroup",
+                      "version": "2.123.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_rds.SubnetGroup",
+                  "version": "2.123.0"
+                }
+              },
+              "SecurityGroup": {
+                "id": "SecurityGroup",
+                "path": "SessRdsStackpg/SESS-Postgres/SecurityGroup",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SessRdsStackpg/SESS-Postgres/SecurityGroup/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                      "aws:cdk:cloudformation:props": {
+                        "groupDescription": "Security group for SESS-Postgres database",
+                        "securityGroupEgress": [
+                          {
+                            "cidrIp": "0.0.0.0/0",
+                            "description": "Allow all outbound traffic by default",
+                            "ipProtocol": "-1"
+                          }
+                        ],
+                        "vpcId": "vpc-074b34d3b2100ab51"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                      "version": "2.123.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+                  "version": "2.123.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "SessRdsStackpg/SESS-Postgres/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::RDS::DBInstance",
+                  "aws:cdk:cloudformation:props": {
+                    "allocatedStorage": "100",
+                    "backupRetentionPeriod": 0,
+                    "copyTagsToSnapshot": true,
+                    "dbInstanceClass": "db.m6i.xlarge",
+                    "dbName": "sesspg",
+                    "dbSubnetGroupName": {
+                      "Ref": "SESSPostgresSubnetGroup1922216E"
+                    },
+                    "deleteAutomatedBackups": true,
+                    "engine": "postgres",
+                    "engineVersion": "15.5",
+                    "masterUsername": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "{{resolve:secretsmanager:",
+                          {
+                            "Ref": "dbadminusersecretpostgresB0AD6A63"
+                          },
+                          ":SecretString:username::}}"
+                        ]
+                      ]
+                    },
+                    "masterUserPassword": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "{{resolve:secretsmanager:",
+                          {
+                            "Ref": "dbadminusersecretpostgresB0AD6A63"
+                          },
+                          ":SecretString:password::}}"
+                        ]
+                      ]
+                    },
+                    "multiAz": true,
+                    "port": "5432",
+                    "publiclyAccessible": true,
+                    "storageType": "gp2",
+                    "vpcSecurityGroups": [
+                      {
+                        "Fn::GetAtt": [
+                          "SESSPostgresSecurityGroupEFAB5B76",
+                          "GroupId"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_rds.CfnDBInstance",
+                  "version": "2.123.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_rds.DatabaseInstance",
+              "version": "2.123.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "SessRdsStackpg/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "SessRdsStackpg/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.123.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.3.0"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "SessRdsStackpg/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.123.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "SessRdsStackpg/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.123.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.123.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.3.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.123.0"
+    }
+  }
+}

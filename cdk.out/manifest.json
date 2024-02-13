@@ -1,0 +1,101 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "SessRdsStackpg.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "SessRdsStackpg.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "SessRdsStackpg": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://058264214610/us-east-2",
+      "properties": {
+        "templateFile": "SessRdsStackpg.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::058264214610:role/cdk-hnb659fds-deploy-role-058264214610-us-east-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::058264214610:role/cdk-hnb659fds-cfn-exec-role-058264214610-us-east-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-058264214610-us-east-2/500f04021152fc68e06da7b2dcafcd42c2f27cf3647f68aab6102dce717108c3.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "SessRdsStackpg.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::058264214610:role/cdk-hnb659fds-lookup-role-058264214610-us-east-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "SessRdsStackpg.assets"
+      ],
+      "metadata": {
+        "/SessRdsStackpg/db-admin-user-secret-postgres/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "dbadminusersecretpostgresB0AD6A63"
+          }
+        ],
+        "/SessRdsStackpg/db-admin-user-secret-postgres/Attachment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "dbadminusersecretpostgresAttachment80781389"
+          }
+        ],
+        "/SessRdsStackpg/sesspg-SG/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "sesspgSG93F490C2"
+          }
+        ],
+        "/SessRdsStackpg/SESS-Postgres/SubnetGroup/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SESSPostgresSubnetGroup1922216E"
+          }
+        ],
+        "/SessRdsStackpg/SESS-Postgres/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SESSPostgresSecurityGroupEFAB5B76"
+          }
+        ],
+        "/SessRdsStackpg/SESS-Postgres/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SESSPostgres3CF2D51A"
+          }
+        ],
+        "/SessRdsStackpg/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/SessRdsStackpg/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/SessRdsStackpg/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "SessRdsStackpg"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
