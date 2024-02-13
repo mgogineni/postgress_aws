@@ -1,0 +1,185 @@
+{
+ "Resources": {
+  "dbadminusersecretA7D73F39": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Description": "Database master user credentials",
+    "GenerateSecretString": {
+     "ExcludePunctuation": true,
+     "GenerateStringKey": "password",
+     "PasswordLength": 16,
+     "SecretStringTemplate": "{\"username\":\"postgres\"}"
+    },
+    "Name": "db-admin-user-secret"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SessRdsStack/db-admin-user-secret/Resource"
+   }
+  },
+  "dbadminusersecretAttachment1C60E16E": {
+   "Type": "AWS::SecretsManager::SecretTargetAttachment",
+   "Properties": {
+    "SecretId": {
+     "Ref": "dbadminusersecretA7D73F39"
+    },
+    "TargetId": {
+     "Ref": "SESSPostgresDB1C56E80D9"
+    },
+    "TargetType": "AWS::RDS::DBInstance"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SessRdsStack/db-admin-user-secret/Attachment/Resource"
+   }
+  },
+  "sessdb2SG6F7FEE04": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "SessRdsStack/sessdb2-SG",
+    "GroupName": "sessdb2-SG",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": "vpc-074b34d3b2100ab51"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SessRdsStack/sessdb2-SG/Resource"
+   }
+  },
+  "SESSPostgresDB1SubnetGroup95E6F743": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnet group for SESS-Postgres-DB1 database",
+    "SubnetIds": [
+     "subnet-094d643344343d2cb",
+     "subnet-0972dab1c0de841c4",
+     "subnet-0071a9db132419af3"
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SessRdsStack/SESS-Postgres-DB1/SubnetGroup/Default"
+   }
+  },
+  "SESSPostgresDB1SecurityGroupB2F7815D": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for SESS-Postgres-DB1 database",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": "vpc-074b34d3b2100ab51"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SessRdsStack/SESS-Postgres-DB1/SecurityGroup/Resource"
+   }
+  },
+  "SESSPostgresDB1C56E80D9": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "AllocatedStorage": "100",
+    "BackupRetentionPeriod": 0,
+    "CopyTagsToSnapshot": true,
+    "DBInstanceClass": "db.m6i.xlarge",
+    "DBName": "sessdb2",
+    "DBSubnetGroupName": {
+     "Ref": "SESSPostgresDB1SubnetGroup95E6F743"
+    },
+    "DeleteAutomatedBackups": true,
+    "Engine": "postgres",
+    "EngineVersion": "15.5",
+    "MasterUserPassword": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "dbadminusersecretA7D73F39"
+       },
+       ":SecretString:password::}}"
+      ]
+     ]
+    },
+    "MasterUsername": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "dbadminusersecretA7D73F39"
+       },
+       ":SecretString:username::}}"
+      ]
+     ]
+    },
+    "Port": "1521",
+    "PubliclyAccessible": true,
+    "StorageType": "gp2",
+    "VPCSecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "SESSPostgresDB1SecurityGroupB2F7815D",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SessRdsStack/SESS-Postgres-DB1/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2WMzQ6CQAyEn4X7UgGfwJ/EeAXvpixVF2Ux267EkH13I+BP9DTTma+TQZrNIYmw41hX5/hiSugLQX1W2PG+Z9KOhBu0eCQHfTHcanWwkxtlh+5IshBBfWrIfgG/TVCks2HHOyP3jWv9daI/QVCuYujXKFgi09ayoNWkCl9akvfPevkXvNAQVE7ceqfpWbx8ULatCGqe3bIE0hSSqGZjYuetmIYgH/UB8eYfqBYBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "SessRdsStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
